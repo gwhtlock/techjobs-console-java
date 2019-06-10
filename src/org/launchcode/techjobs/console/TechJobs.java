@@ -2,6 +2,7 @@ package org.launchcode.techjobs.console;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -61,9 +62,39 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    System.out.println("Currently searching all columns.");
+
+                    findByValue(searchTerm);
+
+//                    ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+//
+//                    jobs = JobData.findAll();
+//
+//                    printJobs(jobs);
                 } else {
-                    printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
+                    System.out.println("Currently searching: "+searchField+" column");
+
+                    ArrayList<HashMap<String, String>> jobSearchResults = new ArrayList<>();
+                    jobSearchResults = JobData.findByColumnAndValue(searchField, searchTerm);
+
+                    if(jobSearchResults.isEmpty()){
+                        System.out.println("Sorry!!! Jobs not found \nNo jobs associated with search term: "+ searchTerm.toUpperCase()+" Have been located");
+                    }else {
+
+                        printJobs(jobSearchResults);
+//                    printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
+//                    System.out.println(searchField);
+//                    System.out.println(searchTerm);
+//
+//                    ArrayList<HashMap<String, String>> jobs = new ArrayList<>();  //created another arraylsit to catch results of JobData.findByColumnAndValue(searchField, searchTerm) ot currenty returns an empyt arraylist
+
+//                    if(jobs.isEmpty()){
+//                        System.out.println("array list retrieved from search is empty");
+//                    }else{
+//                        System.out.println("arraylist search results below");
+//                        System.out.println(jobs);
+//                    }
+                    }
                 }
             }
         }
@@ -111,6 +142,68 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+//        someJobs.clear(); //clears current arraylist to test error message in first if statement
+
+        if(someJobs.isEmpty()){
+            System.out.println("No jobs currently listed");
+        } else {
+
+            for (HashMap<String, String> jobs : someJobs) {
+                System.out.println("*******************************************");
+                for (Map.Entry<String, String> job : jobs.entrySet()) {
+                    System.out.println(job.getKey() + ":  " + job.getValue());
+                }
+                System.out.println("*******************************************");
+                System.out.println("");
+                System.out.println("");
+
+            }
+        }
+
+
+
+
+
+    }
+
+    public static void findByValue(String searchterm){
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        ArrayList<HashMap<String, String>> jobsFound = new ArrayList<>();
+
+        jobs = JobData.findAll();
+
+        for(HashMap<String,String> job : jobs){ // iterates through the arraylist of hashkmaps setting job to the value of each hashmap within the arraylist in turn
+
+
+            for(String key : job.values()){
+
+                //makes the
+               key = key.toLowerCase();
+               searchterm = searchterm.toLowerCase();
+
+
+
+                if(key.contains(searchterm)){
+                    jobsFound.add(job);
+                }
+            }
+
+//            if (job.containsValue(searchterm)){
+//                jobsFound.add(job);
+//            }
+
+        }
+
+        if(jobsFound.isEmpty()){
+            System.out.println("Sorry!!! Jobs not found \nNo jobs associated with search term: "+searchterm.toUpperCase()+" Have been located");
+        }else {
+
+            printJobs(jobsFound);
+
+        }
+
+
+
     }
 }
