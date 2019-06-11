@@ -176,16 +176,21 @@ public class TechJobs {
         for(HashMap<String,String> job : jobs){ // iterates through the arraylist of hashkmaps setting job to the value of each hashmap within the arraylist in turn
 
 
-            for(String key : job.values()){
+            for(String value : job.values()){
 
                 //makes the
-               key = key.toLowerCase();
+               value = value.toLowerCase();
                searchterm = searchterm.toLowerCase();
 
 
 
-                if(key.contains(searchterm)){
+                if(value.contains(searchterm)){
+
+                    if(jobsFound.contains(job)){
+                        break;
+                    }
                     jobsFound.add(job);
+
                 }
             }
 
